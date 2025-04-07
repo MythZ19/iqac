@@ -12,7 +12,10 @@
   <div class="text-center p-8 bg-white/80 text-gray-700 backdrop-blur-md rounded-2xl shadow-2xl max-w-md">
     <h1 class="text-4xl font-bold mb-4">Welcome to <span class="text-yellow-300" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">IQAC</span></h1>
     <p class="text-lg mb-6">Internal Quality Assurance Cell</p>
-    <a href="/admin" class="inline-block px-6 py-3 bg-white text-indigo-600 font-semibold rounded-full shadow hover:bg-yellow-300 hover:text-black transition duration-300">
+    <a href="/user" class="inline-block px-5 py-2 bg-indigo-500 text-white font-medium rounded-lg hover:bg-indigo-600 transition">
+      Go to User Panel
+    </a>
+    <a href="/admin" class="inline-block px-5 py-2 bg-pink-500 text-white font-medium rounded-lg hover:bg-pink-600 transition">
       Go to Admin Panel
     </a>
   </div>

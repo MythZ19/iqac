@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Department;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -18,11 +19,16 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
+        $dept = Department::create([
+            'name' => 'Computer Engineering'
+        ]);
+
         User::create([
             'name' => 'Test User',
             'email' => 'test@gmail.com',
             'password' => bcrypt('test'),
             'role' => 'hod',
+            'department_id' => $dept->id,
         ]);
     }
 }

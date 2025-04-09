@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->after('name')->default('user');
+            $table->string('role')->after('name')->default('hod');
+            $table->unsignedBigInteger('department_id')->nullable()->after('id');
+
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null');
         });
     }
 
@@ -23,6 +26,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('role');
+            $table->dropForeign(['department_id']);
         });
     }
 };

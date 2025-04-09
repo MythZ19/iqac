@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@gmail.com',
             'password' => bcrypt('test'),
-            'role' => 'user',
+            'role' => 'hod',
         ]);
     }
 }

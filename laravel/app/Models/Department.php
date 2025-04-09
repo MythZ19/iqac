@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SchoolDepartmentDetail extends Model
+class Department extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'user_id',
-        'school_name',
+        'name',
         'year_of_establishment',
         'year_of_first_intake',
         'head_of_department',
@@ -25,8 +22,8 @@ class SchoolDepartmentDetail extends Model
         'number_of_patents_received',
     ];
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(User::class);
     }
 }

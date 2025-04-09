@@ -17,6 +17,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'role',
+        'department_id',
     ];
 
     protected $hidden = [
@@ -31,12 +32,33 @@ class User extends Authenticatable implements FilamentUser
             'password' => 'hashed',
         ];
     }
+    // public function canAccessPanel(Panel $panel): bool
+    // {
+    //     return match ($panel->getId()) {
+    //         'admin' => $this->role === 'admin',
+    //         'user'  => $this->role === 'user',
+    //         default => false,
+    //     };
+    // }
+
     public function canAccessPanel(Panel $panel): bool
     {
-        return match ($panel->getId()) {
-            'admin' => $this->role === 'admin',
-            'user'  => $this->role === 'user',
-            default => false,
-        };
+        return true;
     }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+    
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+    
+    public function isHod(): bool
+    {
+        return $this->role === 'hod';
+    }
+
 }

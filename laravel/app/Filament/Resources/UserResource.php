@@ -6,10 +6,10 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -18,31 +18,38 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
 
+    protected static ?string $navigationGroup = 'Administration';
 
-    protected static ?string $navigationLabel = 'Users';
-
-    protected static ?string $navigationGroup = 'Settings';
-
-    protected static ?string $modelLabel = 'User';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')
+                Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
-                TextInput::make('email')
+                    ->label('Name'),
+                Forms\Components\TextInput::make('email')
+                    ->required()
                     ->email()
+                    ->label('Email'),
+                Forms\Components\Select::make('department_id')
+                    ->relationship('department', 'name')
                     ->required()
-                    ->maxLength(255),
-                TextInput::make('password')
+                    ->label('Department'),
+                Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
-                    ->dehydrated(fn ($state) => filled($state))
-                    ->maxLength(255),
+                    ->revealable()
+                    ->required(),
+                Forms\Components\Select::make('role')
+                    ->options([
+                        'admin' => 'Admin',
+                        'hod' => 'Hod',
+                    ])
+                    ->default('hod')
+                    ->label('Role'),
             ]);
     }
 
@@ -50,19 +57,31 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable(),
-                Tables\Columns\TextColumn::make('name')->searchable(),
-                Tables\Columns\TextColumn::make('email')->searchable(),
-                Tables\Columns\TextColumn::make('created_at')->dateTime()->label('Created'),
+                TextColumn::make('name')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Name'),
+                TextColumn::make('email')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Email'),
+                TextColumn::make('department.name')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Department'),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()->hidden(fn ($record) => auth()->user()->isHod()),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
@@ -71,5 +90,17 @@ class UserResource extends Resource
         return [
             'index' => Pages\ManageUsers::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+
+        if ($user->isAdmin()) {
+            return parent::getEloquentQuery();
+        }
+
+        return parent::getEloquentQuery()
+            ->where('id', $user->id);
     }
 }

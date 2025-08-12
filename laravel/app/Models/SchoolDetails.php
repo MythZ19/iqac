@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class SchoolDetails extends Model
 {
     protected $fillable = [
         'user_id',
@@ -22,7 +22,11 @@ class Department extends Model
         'student_intake_capacity',
         'number_of_patents_received',
     ];
-
+    
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
     public function users()
     {
         return $this->hasMany(User::class);

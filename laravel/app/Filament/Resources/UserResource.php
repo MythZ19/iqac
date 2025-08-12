@@ -35,8 +35,7 @@ class UserResource extends Resource
                     ->required()
                     ->email()
                     ->label('Email'),
-                Forms\Components\Select::make('department_id')
-                    ->relationship('department', 'name')
+                    Forms\Components\TextInput::make('name_of_department')
                     ->required()
                     ->label('Department'),
                 Forms\Components\TextInput::make('password')

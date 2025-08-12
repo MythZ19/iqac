@@ -11,7 +11,17 @@ return new class extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('name');
+            $table->string('name_of_department');
+         
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+        });
+        Schema::create('school_details', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('name_of_department');
+            $table->string('name_of_school');
             $table->year('year_of_establishment')->nullable();
             $table->year('year_of_first_intake')->nullable();
             $table->string('head_of_department')->nullable();
@@ -29,14 +39,14 @@ return new class extends Migration
         });
         
 
-        Schema::create('teaching_faculty_positions', function (Blueprint $table) {
+        Schema::create('teaching_faculties', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('department_id');
             $table->string('name');
             $table->string('designation')->nullable();
             $table->string('degree')->nullable();
-            $table->string('university_institute')->nullable();
+            $table->string('degree_university_institution')->nullable();
             $table->string('subject_specialization')->nullable();
             $table->timestamps();
         
@@ -57,7 +67,7 @@ return new class extends Migration
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
         });
         
-        Schema::create('department_staff', function (Blueprint $table) {
+        Schema::create('staff', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('department_id');
@@ -457,7 +467,7 @@ return new class extends Migration
         Schema::dropIfExists('courses');
         Schema::dropIfExists('department_staff');
         Schema::dropIfExists('guest_lecturers');
-        Schema::dropIfExists('teaching_faculty_positions');
+        Schema::dropIfExists('teaching_faculties');
         Schema::dropIfExists('departments');
         Schema::dropIfExists('scholar_enrollments');
         Schema::dropIfExists('qualified_students');

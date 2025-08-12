@@ -10,8 +10,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Create Admin
         User::create([
             'name' => 'Admin User',
             'email' => 'admin@gmail.com',
@@ -19,16 +18,15 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        $dept = Department::create([
-            'name' => 'Computer Engineering'
-        ]);
+    
 
+        // Create HOD User
         User::create([
             'name' => 'Test User',
             'email' => 'test@gmail.com',
             'password' => bcrypt('test'),
             'role' => 'hod',
-            'department_id' => $dept->id,
+    
         ]);
     }
 }

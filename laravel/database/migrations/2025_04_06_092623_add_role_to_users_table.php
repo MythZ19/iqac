@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('role')->after('name')->default('hod');
-            $table->unsignedBigInteger('department_id')->nullable()->after('id');
+          
 
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null');
         });
     }
+
 
     /**
      * Reverse the migrations.

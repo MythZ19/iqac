@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\GuestLecturerResource\Pages;
-use App\Filament\Resources\GuestLecturerResource\RelationManagers;
-use App\Models\GuestLecturer;
+use App\Filament\Resources\TeachingFacultyResource\Pages;
+use App\Filament\Resources\TeachingFacultyResource\RelationManagers;
+use App\Models\TeachingFaculty;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -16,15 +16,13 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
-class GuestLecturerResource extends Resource
+class TeachingFacultyResource extends Resource
 {
-    protected static ?string $model = GuestLecturer::class;
+    protected static ?string $model = TeachingFaculty::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
-
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Faculty & Staff';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -48,15 +46,23 @@ class GuestLecturerResource extends Resource
                 TextInput::make('name')
                     ->required(),
 
-                TextInput::make('research_degrees')
-                    ->label('Research Degrees')
+                
+
+                    TextInput::make('designation')
+                    ->label('Designation')
+                    ->nullable(),
+
+                TextInput::make('degree_university_institution')
+                    ->label('Degree & University/Institution from which awarded(PG & Research Degree Only)')
                     ->nullable(),
 
                 TextInput::make('subject_specialization')
                     ->label('Subject Specialization')
                     ->nullable(),
             ]);
+                
     }
+        
 
     public static function table(Table $table): Table
     {
@@ -64,7 +70,8 @@ class GuestLecturerResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->searchable()->sortable(),
-                TextColumn::make('research_degrees')->label('Research Degrees'),
+                TextColumn::make('designation')->label('Designation'),
+                TextColumn::make('degree_university_institution')->label('Degree & University/Institution from which awarded(PG & Research Degree Only)'),
                 TextColumn::make('subject_specialization'),
                 TextColumn::make('user.name')->label('User')->hidden($hod),
                 TextColumn::make('department.name')->label('Department')->hidden($hod),
@@ -93,7 +100,7 @@ class GuestLecturerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageGuestLecturers::route('/'),
+            'index' => Pages\ManageTeachingFaculty::route('/'),
         ];
     }
 
